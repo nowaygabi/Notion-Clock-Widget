@@ -1,284 +1,337 @@
 <!DOCTYPE html>
 <html lang="en-US">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Notion Clock Widget</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap"
-        rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --bg-color: #101010;
-            --container-bg-color: #1e1e1e;
-            --text-color: #eaeaea;
-            --text-color-light: #aaa;
-            --greeting-color: #d1a3e3;
-            --timer-unit-bg: #333;
-            --font-primary: 'Nunito', sans-serif;
-            --font-secondary: 'Pacifico', cursive;
-        }
+      :root {
+        --bg-color: #191919;
+        --container-bg-color: #1e1e1e;
+        --text-color: #eaeaea;
+        --text-color-light: #aaa;
+        --greeting-color: #d1a3e3;
+        --timer-unit-bg: #333;
+        --font-primary: "Nunito", sans-serif;
+        --font-secondary: "Pacifico", cursive;
+      }
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: var(--font-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
 
-        .clock-container {
-            width: 100%;
-        }
+      .clock-container {
+        width: 100%;
+      }
 
-        .content-block {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            background-color: var(--container-bg-color);
-            border-radius: 20px;
-            padding: 25px 35px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            gap: 20px;
-        }
+      .content-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        background-color: var(--container-bg-color);
+        border-radius: 20px;
+        padding: 25px 35px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        gap: 20px;
+      }
 
-        #greeting {
-            font-family: var(--font-secondary);
-            color: var(--greeting-color);
-            font-size: 32px;
-            font-weight: 400;
-            line-height: 1.2;
-        }
+      #greeting {
+        font-family: var(--font-secondary);
+        color: var(--greeting-color);
+        font-size: 32px;
+        font-weight: 400;
+        line-height: 1.2;
+      }
 
-        #current-date {
-            color: var(--text-color-light);
-            margin-top: 5px;
-            text-transform: capitalize;
-            font-size: 16px;
-        }
+      #current-date {
+        color: var(--text-color-light);
+        margin-top: 5px;
+        text-transform: capitalize;
+        font-size: 16px;
+      }
 
-        .timer-side {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
+      .timer-side {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
 
-        .timer-side .label {
-            color: var(--text-color-light);
-            font-size: 14px;
-            white-space: nowrap;
-        }
+      .timer-side .label {
+        color: var(--text-color-light);
+        font-size: 14px;
+        white-space: nowrap;
+      }
 
-        #timer {
-            display: flex;
-            gap: 10px;
-        }
+      #timer {
+        display: flex;
+        gap: 10px;
+      }
 
-        .time-unit {
-            background-color: var(--timer-unit-bg);
-            padding: 10px 15px;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 40px;
-        }
+      .time-unit {
+        background-color: var(--timer-unit-bg);
+        padding: 10px 15px;
+        border-radius: 8px;
+        text-align: center;
+        min-width: 40px;
+      }
 
-        .time-unit span {
-            display: block;
-            color: var(--text-color);
-            font-size: 28px;
-            font-weight: 700;
-        }
+      .time-unit span {
+        display: block;
+        color: var(--text-color);
+        font-size: 28px;
+        font-weight: 700;
+      }
 
-        .time-unit .unit-label {
-            color: var(--text-color-light);
-            font-size: 10px;
-            font-weight: 400;
-            text-transform: uppercase;
-        }
+      .time-unit .unit-label {
+        color: var(--text-color-light);
+        font-size: 10px;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="clock-container">
-        <div class="content-block">
-            <div class="info-side">
-                <h2 id="greeting"></h2>
-                <p id="current-date"></p>
-            </div>
-            <div class="timer-side">
-                <p class="label" id="timer-label"></p>
-                <div id="timer">
-                    <div class="time-unit">
-                        <span id="days">00</span>
-                        <span class="unit-label" id="days-label"></span>
-                    </div>
-                    <div class="time-unit">
-                        <span id="hours">00</span>
-                        <span class="unit-label" id="hours-label"></span>
-                    </div>
-                    <div class="time-unit">
-                        <span id="minutes">00</span>
-                        <span class="unit-label" id="minutes-label"></span>
-                    </div>
-                    <div class="time-unit">
-                        <span id="seconds">00</span>
-                        <span class="unit-label" id="seconds-label"></span>
-                    </div>
-                </div>
-            </div>
+      <div class="content-block">
+        <div class="info-side">
+          <h2 id="greeting"></h2>
+          <p id="current-date"></p>
         </div>
+        <div class="timer-side">
+          <p class="label" id="timer-label"></p>
+          <div id="timer">
+            <div class="time-unit">
+              <span id="days">00</span>
+              <span class="unit-label" id="days-label"></span>
+            </div>
+            <div class="time-unit">
+              <span id="hours">00</span>
+              <span class="unit-label" id="hours-label"></span>
+            </div>
+            <div class="time-unit">
+              <span id="minutes">00</span>
+              <span class="unit-label" id="minutes-label"></span>
+            </div>
+            <div class="time-unit">
+              <span id="seconds">00</span>
+              <span class="unit-label" id="seconds-label"></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        const translations = {
-            'pt-br': {
-                greetings: { morning: "Bom dia", afternoon: "Boa tarde", evening: "Boa noite" },
-                dateLocale: 'pt-BR',
-                timerLabel: "Tempo restante na semana",
-                units: { days: "dias", hours: "hrs", minutes: "min", seconds: "seg" },
-                weekStart: 0
-            },
-            'en-us': {
-                greetings: { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening" },
-                dateLocale: 'en-US',
-                timerLabel: "Time left in week",
-                units: { days: "days", hours: "hrs", minutes: "min", seconds: "sec" },
-                weekStart: 0
-            },
-            'en-gb': {
-                greetings: { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening" },
-                dateLocale: 'en-GB',
-                timerLabel: "Time left in week",
-                units: { days: "days", hours: "hrs", minutes: "min", seconds: "sec" },
-                weekStart: 1
-            },
-            'es': {
-                greetings: { morning: "Buenos días", afternoon: "Buenas tardes", evening: "Buenas noches" },
-                dateLocale: 'es-ES',
-                timerLabel: "Tiempo restante en la semana",
-                units: { days: "días", hours: "hrs", minutes: "min", seconds: "seg" },
-                weekStart: 1
-            },
-            'es-mx': {
-                greetings: { morning: "Buenos días", afternoon: "Buenas tardes", evening: "Buenas noches" },
-                dateLocale: 'es-MX',
-                timerLabel: "Tiempo restante en la semana",
-                units: { days: "días", hours: "hrs", minutes: "min", seconds: "seg" },
-                weekStart: 0
-            },
-            'fr': {
-                greetings: { morning: "Bonjour", afternoon: "Bon après-midi", evening: "Bonsoir" },
-                dateLocale: 'fr-FR',
-                timerLabel: "Temps restant dans la semaine",
-                units: { days: "jours", hours: "hrs", minutes: "min", seconds: "sec" },
-                weekStart: 1
-            },
-            'de': {
-                greetings: { morning: "Guten Morgen", afternoon: "Guten Tag", evening: "Guten Abend" },
-                dateLocale: 'de-DE',
-                timerLabel: "Verbleibende Zeit in der Woche",
-                units: { days: "tage", hours: "std", minutes: "min", seconds: "sek" },
-                weekStart: 1
-            },
-            'it': {
-                greetings: { morning: "Buongiorno", afternoon: "Buon pomeriggio", evening: "Buonasera" },
-                dateLocale: 'it-IT',
-                timerLabel: "Tempo rimanente nella settimana",
-                units: { days: "giorni", hours: "ore", minutes: "min", seconds: "sec" },
-                weekStart: 1
-            },
-            'ja': {
-                greetings: { morning: "おはようございます", afternoon: "こんにちは", evening: "こんばんは" },
-                dateLocale: 'ja-JP',
-                timerLabel: "週の残り時間",
-                units: { days: "日", hours: "時間", minutes: "分", seconds: "秒" },
-                weekStart: 0
-            }
-        };
+      const translations = {
+        "pt-br": {
+          greetings: {
+            morning: "Bom dia",
+            afternoon: "Boa tarde",
+            evening: "Boa noite",
+          },
+          dateLocale: "pt-BR",
+          timerLabel: "Tempo restante na semana",
+          units: { days: "dias", hours: "hrs", minutes: "min", seconds: "seg" },
+          weekStart: 0,
+        },
+        "en-us": {
+          greetings: {
+            morning: "Good morning",
+            afternoon: "Good afternoon",
+            evening: "Good evening",
+          },
+          dateLocale: "en-US",
+          timerLabel: "Time left in week",
+          units: { days: "days", hours: "hrs", minutes: "min", seconds: "sec" },
+          weekStart: 0,
+        },
+        "en-gb": {
+          greetings: {
+            morning: "Good morning",
+            afternoon: "Good afternoon",
+            evening: "Good evening",
+          },
+          dateLocale: "en-GB",
+          timerLabel: "Time left in week",
+          units: { days: "days", hours: "hrs", minutes: "min", seconds: "sec" },
+          weekStart: 1,
+        },
+        es: {
+          greetings: {
+            morning: "Buenos días",
+            afternoon: "Buenas tardes",
+            evening: "Buenas noches",
+          },
+          dateLocale: "es-ES",
+          timerLabel: "Tiempo restante en la semana",
+          units: { days: "días", hours: "hrs", minutes: "min", seconds: "seg" },
+          weekStart: 1,
+        },
+        "es-mx": {
+          greetings: {
+            morning: "Buenos días",
+            afternoon: "Buenas tardes",
+            evening: "Buenas noches",
+          },
+          dateLocale: "es-MX",
+          timerLabel: "Tiempo restante en la semana",
+          units: { days: "días", hours: "hrs", minutes: "min", seconds: "seg" },
+          weekStart: 0,
+        },
+        fr: {
+          greetings: {
+            morning: "Bonjour",
+            afternoon: "Bon après-midi",
+            evening: "Bonsoir",
+          },
+          dateLocale: "fr-FR",
+          timerLabel: "Temps restant dans la semaine",
+          units: {
+            days: "jours",
+            hours: "hrs",
+            minutes: "min",
+            seconds: "sec",
+          },
+          weekStart: 1,
+        },
+        de: {
+          greetings: {
+            morning: "Guten Morgen",
+            afternoon: "Guten Tag",
+            evening: "Guten Abend",
+          },
+          dateLocale: "de-DE",
+          timerLabel: "Verbleibende Zeit in der Woche",
+          units: { days: "tage", hours: "std", minutes: "min", seconds: "sek" },
+          weekStart: 1,
+        },
+        it: {
+          greetings: {
+            morning: "Buongiorno",
+            afternoon: "Buon pomeriggio",
+            evening: "Buonasera",
+          },
+          dateLocale: "it-IT",
+          timerLabel: "Tempo rimanente nella settimana",
+          units: {
+            days: "giorni",
+            hours: "ore",
+            minutes: "min",
+            seconds: "sec",
+          },
+          weekStart: 1,
+        },
+        ja: {
+          greetings: {
+            morning: "おはようございます",
+            afternoon: "こんにちは",
+            evening: "こんばんは",
+          },
+          dateLocale: "ja-JP",
+          timerLabel: "週の残り時間",
+          units: { days: "日", hours: "時間", minutes: "分", seconds: "秒" },
+          weekStart: 0,
+        },
+      };
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const name = urlParams.get('name') || 'Gabriela';
-        const langParam = (urlParams.get('lang') || 'en-us').toLowerCase();
-        const T = translations[langParam] || translations['en-us'];
+      const urlParams = new URLSearchParams(window.location.search);
+      const name = urlParams.get("name") || "Gabriela";
+      const langParam = (urlParams.get("lang") || "en-us").toLowerCase();
+      const T = translations[langParam] || translations["en-us"];
 
-        const elements = {
-            greeting: document.getElementById('greeting'),
-            currentDate: document.getElementById('current-date'),
-            timerLabel: document.getElementById('timer-label'),
-            days: document.getElementById('days'),
-            hours: document.getElementById('hours'),
-            minutes: document.getElementById('minutes'),
-            seconds: document.getElementById('seconds'),
-            daysLabel: document.getElementById('days-label'),
-            hoursLabel: document.getElementById('hours-label'),
-            minutesLabel: document.getElementById('minutes-label'),
-            secondsLabel: document.getElementById('seconds-label'),
-        };
+      const elements = {
+        greeting: document.getElementById("greeting"),
+        currentDate: document.getElementById("current-date"),
+        timerLabel: document.getElementById("timer-label"),
+        days: document.getElementById("days"),
+        hours: document.getElementById("hours"),
+        minutes: document.getElementById("minutes"),
+        seconds: document.getElementById("seconds"),
+        daysLabel: document.getElementById("days-label"),
+        hoursLabel: document.getElementById("hours-label"),
+        minutesLabel: document.getElementById("minutes-label"),
+        secondsLabel: document.getElementById("seconds-label"),
+      };
 
-        function setStaticContent() {
-            const now = new Date();
-            const hour = now.getHours();
-            let greeting;
+      function setStaticContent() {
+        const now = new Date();
+        const hour = now.getHours();
+        let greeting;
 
-            if (hour >= 5 && hour < 12) greeting = T.greetings.morning;
-            else if (hour >= 12 && hour < 18) greeting = T.greetings.afternoon;
-            else greeting = T.greetings.evening;
+        if (hour >= 5 && hour < 12) greeting = T.greetings.morning;
+        else if (hour >= 12 && hour < 18) greeting = T.greetings.afternoon;
+        else greeting = T.greetings.evening;
 
-            elements.greeting.textContent = `${greeting}, ${name}`;
-            elements.currentDate.textContent = now.toLocaleDateString(T.dateLocale, {
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-            });
+        elements.greeting.textContent = `${greeting}, ${name}`;
+        elements.currentDate.textContent = now.toLocaleDateString(
+          T.dateLocale,
+          {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }
+        );
 
-            elements.timerLabel.textContent = T.timerLabel;
-            elements.daysLabel.textContent = T.units.days;
-            elements.hoursLabel.textContent = T.units.hours;
-            elements.minutesLabel.textContent = T.units.minutes;
-            elements.secondsLabel.textContent = T.units.seconds;
-        }
+        elements.timerLabel.textContent = T.timerLabel;
+        elements.daysLabel.textContent = T.units.days;
+        elements.hoursLabel.textContent = T.units.hours;
+        elements.minutesLabel.textContent = T.units.minutes;
+        elements.secondsLabel.textContent = T.units.seconds;
+      }
 
-        function updateTimer() {
-            const now = new Date();
-            const currentDay = now.getDay();
-            const weekStart = T.weekStart;
+      function updateTimer() {
+        const now = new Date();
+        const currentDay = now.getDay();
+        const weekStart = T.weekStart;
 
-            // Calculate days until the next start of the week, modulo ensures correctness even on boundaries
-            const daysUntilNextStart = (7 - ((currentDay - weekStart + 7) % 7)) % 7 || 7;
+        // Calculate days until the next start of the week, modulo ensures correctness even on boundaries
+        const daysUntilNextStart =
+          (7 - ((currentDay - weekStart + 7) % 7)) % 7 || 7;
 
-            const nextWeekStart = new Date(now);
-            nextWeekStart.setDate(now.getDate() + daysUntilNextStart);
-            nextWeekStart.setHours(0, 0, 0, 0);
+        const nextWeekStart = new Date(now);
+        nextWeekStart.setDate(now.getDate() + daysUntilNextStart);
+        nextWeekStart.setHours(0, 0, 0, 0);
 
-            const diff = nextWeekStart - now;
-            const d = Math.floor(diff / 86400000);
-            const h = Math.floor((diff % 86400000) / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
+        const diff = nextWeekStart - now;
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
 
-            elements.days.textContent = d.toString().padStart(2, '0');
-            elements.hours.textContent = h.toString().padStart(2, '0');
-            elements.minutes.textContent = m.toString().padStart(2, '0');
-            elements.seconds.textContent = s.toString().padStart(2, '0');
-        }
+        elements.days.textContent = d.toString().padStart(2, "0");
+        elements.hours.textContent = h.toString().padStart(2, "0");
+        elements.minutes.textContent = m.toString().padStart(2, "0");
+        elements.seconds.textContent = s.toString().padStart(2, "0");
+      }
 
-        setStaticContent();
-        updateTimer();
-        setInterval(updateTimer, 1000);
+      setStaticContent();
+      updateTimer();
+      setInterval(updateTimer, 1000);
     </script>
-</body>
-
+  </body>
 </html>
